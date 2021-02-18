@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+    nextcloud:
+        image: nextcloud:stable
+        volumes:
+            - $NEXTCLOUD_DATA_LOCATION:/var/www/html
+        ports:
+            - 8000:80
+        restart: unless-stopped
+        depends_on:
+            - db
+    db:
+        image: postgres:13.2
+        volumes:
+            - $POSTGRES_DB_LOCATION:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: nextcloud
+            POSTGRES_USER: nextcloud
+            POSTGRES_DB: nextcloud
+            PGDATA: /var/lib/postgresql/data/pgdata
+
